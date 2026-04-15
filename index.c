@@ -218,18 +218,24 @@ int index_save(const Index *index) {
     if (fflush(f) != 0) {
         fclose(f);
         unlink(tmp_path);
+        free(sorted_entries);
         return -1;
     }
     if (fsync(fileno(f)) != 0) {
         fclose(f);
         unlink(tmp_path);
+        free(sorted_entries);
         return -1;
     }
     fclose(f);
     
     // Atomically rename
-    if (rename(tmp_path, INDEX_FILE) != 0) return -1;
+    if (rename(tmp_path, INDEX_FILE) != 0) {
+        free(sorted_entries);
+        return -1;
+    }
     
+    free(sorted_entries);
     return 0;
 }
 
