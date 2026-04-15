@@ -135,7 +135,7 @@ int object_write(ObjectType type, const void *data, size_t len, ObjectID *id_out
     
     // Create temp file path
     char temp_path[512];
-    snprintf(temp_path, sizeof(temp_path), "%s.tmp", shard_dir);
+    snprintf(temp_path, sizeof(temp_path), "%s/.tmp", shard_dir);
     
     // Write to temp file
     int fd = open(temp_path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
