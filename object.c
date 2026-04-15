@@ -39,6 +39,10 @@ int hex_to_hash(const char *hex, ObjectID *id_out) {
 void compute_hash(const void *data, size_t len, ObjectID *id_out) {
     unsigned int hash_len;
     EVP_MD_CTX *ctx = EVP_MD_CTX_new();
+    if (!ctx) {
+        memset(id_out->hash, 0, HASH_SIZE);
+        return;
+    }
     EVP_DigestInit_ex(ctx, EVP_sha256(), NULL);
     EVP_DigestUpdate(ctx, data, len);
     EVP_DigestFinal_ex(ctx, id_out->hash, &hash_len);
